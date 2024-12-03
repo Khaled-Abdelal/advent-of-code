@@ -51,7 +51,7 @@ fn count_safe(input: &Vec<Vec<i32>>) -> i32 {
             let mut increasing = true;
             for (i, ele) in report.iter().enumerate() {
                 if i == 0 {
-                    if ele - report[i + 1] > 0 {
+                    if (ele - report[i + 1]).signum() > 0 {
                         increasing = false;
                     } else {
                         increasing = true;
