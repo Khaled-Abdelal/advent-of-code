@@ -18,7 +18,7 @@ const DIRECTIONS: [(i32, i32); 4] = [
     (-1, 0), // left
 ];
 
-// brute force bad solution
+// brute force slow solution
 fn count_blockers_loop(start_position: &(i32, i32), width: i32, blockers: &Vec<(i32, i32)>) -> i32 {
     let mut current_direction_index = 0;
     let mut count_infinite = 0;
@@ -72,10 +72,10 @@ fn check_infinite_loop(
             return true;
         }
         if blockers.contains(&&front_step) || front_step == new_blocker {
-            visited.insert((front_step, current_direction));
             current_direction_index += 1;
             continue;
         }
+        visited.insert((front_step, current_direction));
         col = front_step.0;
         row = front_step.1;
         if col == width - 1 || row == width - 1 || row == 0 || col == 0 {
