@@ -4,14 +4,14 @@ use std::{
 };
 
 fn main() {
-    let (input, width) = read_input("test.txt");
+    let (input, width) = read_input("input.txt");
     let count = count_antinode(&input, width);
     println!("The count of unique antinode is {}", count);
 }
 
 fn count_antinode(input: &HashMap<char, Vec<(i32, i32)>>, width: i32) -> i32 {
     let mut result = HashSet::new();
-    for (key, v) in input.iter() {
+    for (_, v) in input.iter() {
         for antena_point in v.iter() {
             for second_antena_point in v.iter() {
                 if antena_point == second_antena_point {
@@ -20,7 +20,7 @@ fn count_antinode(input: &HashMap<char, Vec<(i32, i32)>>, width: i32) -> i32 {
                 let antinodes = calculate_antinodes(antena_point, second_antena_point, width);
                 if let Some(antinodes) = antinodes {
                     antinodes.into_iter().for_each(|antinode| {
-                        result.insert((key, antinode));
+                        result.insert(antinode);
                     });
                 }
             }
@@ -75,11 +75,17 @@ fn calculate_antinodes(
             println!("Why am I here");
         }
     }
-    if antinode_one.0 > 0 && antinode_one.0 < width && antinode_one.1 > 0 && antinode_one.1 < width
+    if antinode_one.0 >= 0
+        && antinode_one.0 < width
+        && antinode_one.1 >= 0
+        && antinode_one.1 < width
     {
         result.push(antinode_one);
     }
-    if antinode_two.0 > 0 && antinode_two.0 < width && antinode_two.1 > 0 && antinode_two.1 < width
+    if antinode_two.0 >= 0
+        && antinode_two.0 < width
+        && antinode_two.1 >= 0
+        && antinode_two.1 < width
     {
         result.push(antinode_two);
     }
@@ -97,7 +103,7 @@ fn read_input(file_path: &str) -> (HashMap<char, Vec<(i32, i32)>>, i32) {
         .lines()
         .enumerate()
         .for_each(|(row, line)| {
-            width = row as i32;
+            width = (row + 1) as i32;
             line.char_indices().for_each(|(col, c)| {
                 if c != '.' {
                     let v: &mut Vec<(i32, i32)> = result.entry(c).or_default();
